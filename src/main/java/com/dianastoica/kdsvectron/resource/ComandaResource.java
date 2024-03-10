@@ -86,9 +86,7 @@ public class ComandaResource {
     public ResponseEntity<?> updateStartTime(@PathVariable("id") String id) {
         Comanda comanda = comandaRepository.findByIdComanda(id);
         if (comanda != null) {
-//            comanda.setStartTime(new Date());
-//            Comanda updatedComanda = comandaRepository.save(comanda);
-            comandaRepository.updateComandaByStartTime(id, new Date());
+            comanda.setStartTime(new Date());
             broadcastUpdate(comanda, "updateStartTime");
             return new ResponseEntity<>(comanda, HttpStatus.OK);
         } else {
@@ -97,14 +95,14 @@ public class ComandaResource {
     }
 
     @PutMapping("/updateEndTime/{id}")
-    public void updateEndTime(@PathVariable("id") String id) {
+    public ResponseEntity<?> updateEndTime(@PathVariable("id") String id) {
         Comanda comanda = comandaRepository.findByIdComanda(id);
         if (comanda != null) {
-            comandaRepository.updateComandaByEndTime(id, new Date());
-            comanda = comandaRepository.findByIdComanda(id);
+            comanda.setEndTime(new Date());
             broadcastUpdate(comanda, "updateEndTime");
-//            comanda.setEndTime(new Date());
-//            comandaRepository.save(comanda);
+            return new ResponseEntity<>(comanda, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Comanda not found", HttpStatus.NOT_FOUND);
         }
     }
 }
