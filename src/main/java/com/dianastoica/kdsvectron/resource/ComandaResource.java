@@ -2,6 +2,8 @@ package com.dianastoica.kdsvectron.resource;
 
 import com.dianastoica.kdsvectron.model.Comanda;
 import com.dianastoica.kdsvectron.repository.ComandaRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,12 +24,18 @@ public class ComandaResource {
     }
 
     @GetMapping("/all")
-    public Map<String, List<Comanda>> getAll() {
-        List<Comanda> comenzi = comandaRepository.findAll();
-        Map<String, List<Comanda>> response = new HashMap<>();
-        response.put("comenzi", comenzi);
-        this.template.convertAndSend("/topic/updates", comenzi);
-        return response;
+    public ResponseEntity<Map<String, Object>> getAll() {
+        try {
+            List<Comanda> comenzi = comandaRepository.findAll();
+            Map<String, Object> response = new HashMap<>();
+            response.put("comenzi", comenzi);
+            this.template.convertAndSend("/topic/updates", comenzi);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            Map<String, Object> error = new HashMap<>();
+            error.put("error", e.getMessage());
+            return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @DeleteMapping("/delete/{id}")
