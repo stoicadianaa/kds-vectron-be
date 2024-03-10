@@ -4,7 +4,9 @@ import com.dianastoica.kdsvectron.model.Comanda;
 import com.dianastoica.kdsvectron.repository.ComandaRepository;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/rest/comenzi")
@@ -16,8 +18,11 @@ public class ComandaResource {
     }
 
     @GetMapping("/all")
-    public List<Comanda> getAll() {
-        return comandaRepository.findAll();
+    public Map<String, List<Comanda>> getAll() {
+        List<Comanda> comenzi = comandaRepository.findAll();
+        Map<String, List<Comanda>> response = new HashMap<>();
+        response.put("comenzi", comenzi);
+        return response;
     }
 
     @DeleteMapping("/delete/{id}")
