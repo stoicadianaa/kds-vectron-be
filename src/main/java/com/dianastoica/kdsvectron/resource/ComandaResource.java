@@ -31,7 +31,7 @@ public class ComandaResource {
     }
 
     @DeleteMapping("/delete/{id}")
-    public void delete(String id) {
+    public void delete(@PathVariable String id) {
         comandaRepository.deleteByIdComanda(id);
     }
 
