@@ -1,1 +1,1 @@
-web: java -jar target/kds-vectron-0.0.1-SNAPSHOT.jar.original
+web: java -jar target/kds-vectron-0.0.1-SNAPSHOT.jar
