@@ -56,4 +56,14 @@ public class Comanda {
     @JsonProperty("data_comanda")
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     Date dataComanda;
+
+    @Field("start_time")
+    @JsonProperty("start_time")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    Date startTime;
+
+    @Field("end_time")
+    @JsonProperty("end_time")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    Date endTime;
 }

@@ -4,6 +4,7 @@ import com.dianastoica.kdsvectron.model.Comanda;
 import com.dianastoica.kdsvectron.repository.ComandaRepository;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,8 +31,21 @@ public class ComandaResource {
         comandaRepository.deleteByIdComanda(id);
     }
 
-    @PostMapping("/add")
-    public void add(@RequestBody Comanda comanda) {
-        comandaRepository.save(comanda);
+    @PutMapping("/updateStartTime/{id}")
+    public void updateStartTime(@PathVariable("id") String id) {
+        Comanda comanda = comandaRepository.findByIdComanda(id);
+        if (comanda != null) {
+            comanda.setStartTime(new Date());
+            comandaRepository.save(comanda);
+        }
+    }
+
+    @PutMapping("/updateEndTime/{id}")
+    public void updateEndTime(@PathVariable("id") String id) {
+        Comanda comanda = comandaRepository.findByIdComanda(id);
+        if (comanda != null) {
+            comanda.setEndTime(new Date());
+            comandaRepository.save(comanda);
+        }
     }
 }

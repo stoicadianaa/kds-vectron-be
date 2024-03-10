@@ -5,4 +5,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface ComandaRepository extends MongoRepository<Comanda, Integer> {
     void deleteByIdComanda(String id_comanda);
+    Comanda findByIdComanda(String id_comanda);
 }
