@@ -2,6 +2,7 @@ package com.dianastoica.kdsvectron.resource;
 
 import com.dianastoica.kdsvectron.model.Comanda;
 import com.dianastoica.kdsvectron.repository.ComandaRepository;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -13,9 +14,11 @@ import java.util.Map;
 @RequestMapping("/rest/comenzi")
 public class ComandaResource {
     private final ComandaRepository comandaRepository;
+    private final SimpMessagingTemplate template;
 
-    public ComandaResource(ComandaRepository comandaRepository) {
+    public ComandaResource(ComandaRepository comandaRepository, SimpMessagingTemplate template) {
         this.comandaRepository = comandaRepository;
+        this.template = template;
     }
 
     @GetMapping("/all")
@@ -23,6 +26,7 @@ public class ComandaResource {
         List<Comanda> comenzi = comandaRepository.findAll();
         Map<String, List<Comanda>> response = new HashMap<>();
         response.put("comenzi", comenzi);
+        this.template.convertAndSend("/topic/updates", comenzi);
         return response;
     }
 
