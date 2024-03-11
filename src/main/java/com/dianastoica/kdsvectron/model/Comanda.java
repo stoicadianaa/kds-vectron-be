@@ -57,16 +57,15 @@ public class Comanda {
 
     @Field("data_comanda")
     @JsonProperty("data_comanda")
+    //todo fix this
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     Date dataComanda;
 
     @Field("start_time")
     @JsonProperty("start_time")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     ZonedDateTime startTime;
 
     @Field("end_time")
     @JsonProperty("end_time")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     ZonedDateTime endTime;
 }
