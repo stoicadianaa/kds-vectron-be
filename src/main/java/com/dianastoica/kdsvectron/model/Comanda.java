@@ -7,7 +7,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @Document(collection = "orders")
 public class Comanda {
-    @Field("id_opatar")
+    @Field("id_ospatar")
     @JsonProperty("id_ospatar")
     String idOspatar;
 
