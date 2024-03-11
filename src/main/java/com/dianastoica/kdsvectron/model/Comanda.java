@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -34,9 +35,11 @@ public class Comanda {
     @JsonProperty("table_no")
     String nrMasa;
 
-    @Id
+//    @Id
+
     @Field("id_comanda")
     @JsonProperty("id_comanda")
+    @Indexed(unique = true)
     String idComanda;
 
     @Field("valoare_comanda")
