@@ -1,6 +1,7 @@
 package com.dianastoica.kdsvectron.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -12,10 +13,12 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class ProdusComanda {
     @Field("id_produs")
     @JsonProperty("id_produs")
+    @NotNull(message = "Id is required")
     String id;
 
     @Field("denumire_produs")
     @JsonProperty("denumire_produs")
+    @NotNull(message = "Denumire is required")
     String denumire;
 
     @JsonProperty("id_categorie_produs")
@@ -32,13 +35,15 @@ public class ProdusComanda {
 
     @JsonProperty("cantitate_produs")
     @Field("cantitate_produs")
-    double cantitate;
+    @NotNull(message = "Cantitate is required")
+    Double cantitate;
 
     @JsonProperty("pret_produs")
     @Field("pret_produs")
-    double pretUnitar;
+    Double pretUnitar;
 
     @JsonProperty("valoare_produs")
     @Field("id_comanda")
-    int idComanda;
+    @NotNull(message = "idComanda is required")
+    Integer idComanda;
 }

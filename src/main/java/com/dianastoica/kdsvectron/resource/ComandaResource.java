@@ -1,22 +1,26 @@
 package com.dianastoica.kdsvectron.resource;
 
 import com.dianastoica.kdsvectron.model.Comanda;
+import com.dianastoica.kdsvectron.model.ProdusComanda;
 import com.dianastoica.kdsvectron.repository.ComandaRepository;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/rest/comenzi")
 public class ComandaResource {
     private final ComandaRepository comandaRepository;
     private final SimpMessagingTemplate template;
+    ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+    Validator validator = factory.getValidator();
 
     public ComandaResource(ComandaRepository comandaRepository, SimpMessagingTemplate template) {
         this.comandaRepository = comandaRepository;
@@ -25,14 +29,33 @@ public class ComandaResource {
 
     public void broadcastUpdate(Comanda comanda, String updateType) {
         Map<String, Object> updateInfo = new HashMap<>();
-        updateInfo.put("updateType", updateType); // e.g., "create", "update", "delete"
+        updateInfo.put("updateType", updateType);
         updateInfo.put("comanda", comanda);
         template.convertAndSend("/topic/comandaUpdate", updateInfo);
     }
 
     @PostMapping("/create")
     public ResponseEntity<?> createComanda(@RequestBody Comanda comanda) {
-        comanda.setDataComanda(new Date());
+        if (comandaRepository.existsByIdComanda(comanda.getIdComanda())) {
+            return new ResponseEntity<>("Comanda already exists", HttpStatus.BAD_REQUEST);
+        }
+
+        if (comanda.getDataComanda() == null) {
+            comanda.setDataComanda(new Date());
+        }
+
+        Set<ConstraintViolation<Comanda>> violations = validator.validate(comanda);
+        for (ConstraintViolation<Comanda> violation : violations) {
+            return new ResponseEntity<>(violation.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
+        for (ProdusComanda produsComanda : comanda.getProduseComanda()) {
+            Set<ConstraintViolation<ProdusComanda>> produsComandaViolations = validator.validate(produsComanda);
+            for (ConstraintViolation<ProdusComanda> violation : produsComandaViolations) {
+                return new ResponseEntity<>(violation.getMessage(), HttpStatus.BAD_REQUEST);
+            }
+        }
+
         Comanda savedComanda = comandaRepository.save(comanda);
         broadcastUpdate(savedComanda, "create");
         return new ResponseEntity<>(savedComanda, HttpStatus.CREATED);
@@ -44,18 +67,6 @@ public class ComandaResource {
         Map<String, Object> response = new HashMap<>();
         response.put("comenzi", comenzi);
         return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> delete(@PathVariable String id) {
-        Comanda comanda = comandaRepository.findByIdComanda(id);
-        if (comanda != null) {
-            comandaRepository.deleteByIdComanda(id);
-            broadcastUpdate(comanda, "delete");
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("Comanda not found", HttpStatus.NOT_FOUND);
-        }
     }
 
     @PutMapping("/updateStartTime/{id}")

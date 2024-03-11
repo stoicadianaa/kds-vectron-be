@@ -3,11 +3,11 @@ package com.dianastoica.kdsvectron.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -20,51 +20,54 @@ import java.util.List;
 public class Comanda {
     @Field("id_opatar")
     @JsonProperty("id_ospatar")
-    String idOspatar;
+    private String idOspatar;
 
     @Field("nume_ospatar")
     @JsonProperty("nume_ospatar")
-    String numeOspatar;
+    private String numeOspatar;
 
     @Field("tip_comanda")
     @JsonProperty("tip_comanda")
-    String tipComanda;
+    private String tipComanda;
 
     @Field("table_no")
     @JsonProperty("table_no")
-    String nrMasa;
+    private String nrMasa;
 
     @Id
     @Field("id_comanda")
     @JsonProperty("id_comanda")
-    String idComanda;
+    @NotNull(message = "Id comanda is required")
+    private String idComanda;
 
     @Field("valoare_comanda")
     @JsonProperty("valoare_comanda")
-    double valoareComanda;
+    private Double valoareComanda;
 
     @JsonProperty("observatii_comanda")
     @Field("observatii_comanda")
-    String observatiiComanda;
+    private String observatiiComanda;
 
     @Field("produse_comanda")
     @JsonProperty("produse_comanda")
-    List<ProdusComanda> produseComanda;
+    @NotNull(message = "Produse comanda is required")
+    private List<ProdusComanda> produseComanda;
 
     @JsonProperty("numar_comanda")
     @Field("numar_comanda")
-    String nrComanda;
+    @NotNull(message = "Numar comanda is required")
+    private String nrComanda;
 
     @Field("data_comanda")
     @JsonProperty("data_comanda")
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    Date dataComanda;
+    private Date dataComanda;
 
     @Field("start_time")
     @JsonProperty("start_time")
-    Date startTime;
+    private Date startTime;
 
     @Field("end_time")
     @JsonProperty("end_time")
-    Date endTime;
+    private Date endTime;
 }
