@@ -1,4 +1,4 @@
-package com.dianastoica.config;
+package com.dianastoica.kdsvectron.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

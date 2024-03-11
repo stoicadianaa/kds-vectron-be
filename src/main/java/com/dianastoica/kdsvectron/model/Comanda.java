@@ -1,4 +1,4 @@
-package com.dianastoica.model;
+package com.dianastoica.kdsvectron.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -7,6 +7,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -17,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @Document(collection = "orders")
 public class Comanda {
-    @Field("id_ospatar")
+    @Field("id_opatar")
     @JsonProperty("id_ospatar")
     String idOspatar;
 
