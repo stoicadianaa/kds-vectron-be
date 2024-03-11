@@ -7,9 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
+
+import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,8 +64,7 @@ public class ComandaResource {
     public ResponseEntity<?> updateStartTime(@PathVariable("id") String id) {
         Comanda comanda = comandaRepository.findByIdComanda(id);
         if (comanda != null) {
-            ZonedDateTime nowInBucharest = ZonedDateTime.now(ZoneId.of("EET"));
-            comanda.setStartTime(Date.from(nowInBucharest.toInstant()));
+            comanda.setStartTime(ZonedDateTime.now(ZoneId.of("Europe/Bucharest")));
             Comanda updatedComanda = comandaRepository.save(comanda);
             broadcastUpdate(updatedComanda, "updateStartTime");
             return new ResponseEntity<>(comanda, HttpStatus.OK);
@@ -77,8 +77,7 @@ public class ComandaResource {
     public void updateEndTime(@PathVariable("id") String id) {
         Comanda comanda = comandaRepository.findByIdComanda(id);
         if (comanda != null) {
-            ZonedDateTime nowInBucharest = ZonedDateTime.now(ZoneId.of("EET"));
-            comanda.setEndTime(Date.from(nowInBucharest.toInstant()));
+            comanda.setEndTime(ZonedDateTime.now(ZoneId.of("Europe/Bucharest")));
             Comanda updatedComanda = comandaRepository.save(comanda);
             broadcastUpdate(updatedComanda, "updateEndTime");
         }

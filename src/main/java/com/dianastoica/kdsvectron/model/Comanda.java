@@ -7,6 +7,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -62,10 +63,10 @@ public class Comanda {
     @Field("start_time")
     @JsonProperty("start_time")
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    Date startTime;
+    ZonedDateTime startTime;
 
     @Field("end_time")
     @JsonProperty("end_time")
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    Date endTime;
+    ZonedDateTime endTime;
 }
