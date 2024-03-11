@@ -32,6 +32,7 @@ public class ComandaResource {
 
     @PostMapping("/create")
     public ResponseEntity<?> createComanda(@RequestBody Comanda comanda) {
+        comanda.setDataComanda(new Date());
         Comanda savedComanda = comandaRepository.save(comanda);
         broadcastUpdate(savedComanda, "create");
         return new ResponseEntity<>(savedComanda, HttpStatus.CREATED);
