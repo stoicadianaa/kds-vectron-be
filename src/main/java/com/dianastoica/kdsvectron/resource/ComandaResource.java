@@ -25,7 +25,7 @@ public class ComandaResource {
 
     public void broadcastUpdate(Comanda comanda, String updateType) {
         Map<String, Object> updateInfo = new HashMap<>();
-        updateInfo.put("updateType", updateType); // e.g., "create", "update", "delete"
+        updateInfo.put("updateType", updateType);
         updateInfo.put("comanda", comanda);
         template.convertAndSend("/topic/comandaUpdate", updateInfo);
     }
@@ -46,18 +46,6 @@ public class ComandaResource {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> delete(@PathVariable String id) {
-        Comanda comanda = comandaRepository.findByIdComanda(id);
-        if (comanda != null) {
-            comandaRepository.deleteByIdComanda(id);
-            broadcastUpdate(comanda, "delete");
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("Comanda not found", HttpStatus.NOT_FOUND);
-        }
-    }
-
     @PutMapping("/updateStartTime/{id}")
     public ResponseEntity<?> updateStartTime(@PathVariable("id") String id) {
         Comanda comanda = comandaRepository.findByIdComanda(id);
@@ -66,18 +54,18 @@ public class ComandaResource {
             Comanda updatedComanda = comandaRepository.save(comanda);
             broadcastUpdate(updatedComanda, "updateStartTime");
             return new ResponseEntity<>(comanda, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("Comanda not found", HttpStatus.NOT_FOUND);
         }
+        return new ResponseEntity<>("Comanda not found", HttpStatus.NOT_FOUND);
     }
 
     @PutMapping("/updateEndTime/{id}")
-    public void updateEndTime(@PathVariable("id") String id) {
+    public ResponseEntity<?> updateEndTime(@PathVariable("id") String id) {
         Comanda comanda = comandaRepository.findByIdComanda(id);
         if (comanda != null) {
             comanda.setEndTime(new Date());
             Comanda updatedComanda = comandaRepository.save(comanda);
             broadcastUpdate(updatedComanda, "updateEndTime");
         }
+        return new ResponseEntity<>("Comanda not found", HttpStatus.NOT_FOUND);
     }
 }
