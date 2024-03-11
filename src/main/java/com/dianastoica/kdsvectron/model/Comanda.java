@@ -2,6 +2,7 @@ package com.dianastoica.kdsvectron.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.UniqueConstraint;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -34,7 +35,6 @@ public class Comanda {
     @JsonProperty("table_no")
     String nrMasa;
 
-    @Id
     @Field("id_comanda")
     @JsonProperty("id_comanda")
     String idComanda;
