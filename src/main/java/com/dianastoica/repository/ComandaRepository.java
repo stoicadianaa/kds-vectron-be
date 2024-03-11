@@ -1,6 +1,6 @@
-package com.dianastoica.kdsvectron.repository;
+package com.dianastoica.repository;
 
-import com.dianastoica.kdsvectron.model.Comanda;
+import com.dianastoica.kdsvectron.resource.kdsvectron.model.Comanda;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface ComandaRepository extends MongoRepository<Comanda, Integer> {

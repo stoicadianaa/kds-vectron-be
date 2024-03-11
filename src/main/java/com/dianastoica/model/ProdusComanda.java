@@ -1,4 +1,4 @@
-package com.dianastoica.kdsvectron.resource.kdsvectron.model;
+package com.dianastoica.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;

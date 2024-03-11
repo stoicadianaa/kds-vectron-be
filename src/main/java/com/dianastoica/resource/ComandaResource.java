@@ -1,7 +1,7 @@
-package com.dianastoica.kdsvectron.resource;
+package com.dianastoica.resource;
 
-import com.dianastoica.kdsvectron.model.Comanda;
-import com.dianastoica.kdsvectron.repository.ComandaRepository;
+import com.dianastoica.kdsvectron.resource.kdsvectron.model.Comanda;
+import com.dianastoica.kdsvectron.resource.kdsvectron.repository.ComandaRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
