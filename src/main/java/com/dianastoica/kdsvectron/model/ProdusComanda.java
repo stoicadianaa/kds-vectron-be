@@ -42,7 +42,7 @@ public class ProdusComanda {
     @Field("pret_produs")
     Double pretUnitar;
 
-    @JsonProperty("valoare_produs")
+    @JsonProperty("id_comanda")
     @Field("id_comanda")
     @NotNull(message = "idComanda is required")
     String idComanda;
