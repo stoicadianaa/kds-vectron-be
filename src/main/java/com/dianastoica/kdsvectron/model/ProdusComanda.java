@@ -45,5 +45,5 @@ public class ProdusComanda {
     @JsonProperty("valoare_produs")
     @Field("id_comanda")
     @NotNull(message = "idComanda is required")
-    Integer idComanda;
+    String idComanda;
 }
