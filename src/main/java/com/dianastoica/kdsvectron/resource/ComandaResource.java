@@ -87,8 +87,8 @@ public class ComandaResource {
         Comanda comanda = comandaRepository.findByIdComanda(id);
         if (comanda != null) {
             comanda.setStartTime(new Date());
-//            Comanda updatedComanda = comandaRepository.save(comanda);
-            broadcastUpdate(comanda, "updateStartTime");
+            Comanda updatedComanda = comandaRepository.save(comanda);
+            broadcastUpdate(updatedComanda, "updateStartTime");
             return new ResponseEntity<>(comanda, HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Comanda not found", HttpStatus.NOT_FOUND);
