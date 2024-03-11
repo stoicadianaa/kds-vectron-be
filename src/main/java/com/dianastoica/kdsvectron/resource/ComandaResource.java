@@ -7,10 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
-
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +25,7 @@ public class ComandaResource {
 
     public void broadcastUpdate(Comanda comanda, String updateType) {
         Map<String, Object> updateInfo = new HashMap<>();
-        updateInfo.put("updateType", updateType);
+        updateInfo.put("updateType", updateType); // e.g., "create", "update", "delete"
         updateInfo.put("comanda", comanda);
         template.convertAndSend("/topic/comandaUpdate", updateInfo);
     }
@@ -64,7 +61,7 @@ public class ComandaResource {
     public ResponseEntity<?> updateStartTime(@PathVariable("id") String id) {
         Comanda comanda = comandaRepository.findByIdComanda(id);
         if (comanda != null) {
-            comanda.setStartTime(ZonedDateTime.now(ZoneId.of("Europe/Bucharest")));
+            comanda.setStartTime((new Date()));
             Comanda updatedComanda = comandaRepository.save(comanda);
             broadcastUpdate(updatedComanda, "updateStartTime");
             return new ResponseEntity<>(comanda, HttpStatus.OK);
@@ -77,7 +74,7 @@ public class ComandaResource {
     public void updateEndTime(@PathVariable("id") String id) {
         Comanda comanda = comandaRepository.findByIdComanda(id);
         if (comanda != null) {
-            comanda.setEndTime(ZonedDateTime.now(ZoneId.of("Europe/Bucharest")));
+            comanda.setEndTime(new Date());
             Comanda updatedComanda = comandaRepository.save(comanda);
             broadcastUpdate(updatedComanda, "updateEndTime");
         }
