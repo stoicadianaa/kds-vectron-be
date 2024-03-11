@@ -3,6 +3,7 @@ package com.dianastoica.kdsvectron.resource;
 import com.dianastoica.kdsvectron.model.Comanda;
 import com.dianastoica.kdsvectron.model.ProdusComanda;
 import com.dianastoica.kdsvectron.repository.ComandaRepository;
+import com.dianastoica.kdsvectron.service.ComandaService;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -18,12 +19,14 @@ import java.util.*;
 @RequestMapping("/rest/comenzi")
 public class ComandaResource {
     private final ComandaRepository comandaRepository;
+    private final ComandaService comandaService;
     private final SimpMessagingTemplate template;
     ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     Validator validator = factory.getValidator();
 
-    public ComandaResource(ComandaRepository comandaRepository, SimpMessagingTemplate template) {
+    public ComandaResource(ComandaRepository comandaRepository, ComandaService comandaService, SimpMessagingTemplate template) {
         this.comandaRepository = comandaRepository;
+        this.comandaService = comandaService;
         this.template = template;
     }
 
@@ -74,8 +77,8 @@ public class ComandaResource {
         Comanda comanda = comandaRepository.findByIdComanda(id);
         if (comanda != null) {
             comanda.setStartTime((new Date()));
-            Comanda updatedComanda = comandaRepository.save(comanda);
-            broadcastUpdate(updatedComanda, "updateStartTime");
+            comandaService.updateStartTime(id, new Date());
+            broadcastUpdate(comanda, "updateStartTime");
             return new ResponseEntity<>(comanda, HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Comanda not found", HttpStatus.NOT_FOUND);
@@ -83,12 +86,15 @@ public class ComandaResource {
     }
 
     @PutMapping("/updateEndTime/{id}")
-    public void updateEndTime(@PathVariable("id") String id) {
+    public ResponseEntity<?> updateEndTime(@PathVariable("id") String id) {
         Comanda comanda = comandaRepository.findByIdComanda(id);
         if (comanda != null) {
-            comanda.setEndTime(new Date());
-            Comanda updatedComanda = comandaRepository.save(comanda);
-            broadcastUpdate(updatedComanda, "updateEndTime");
+            comanda.setEndTime((new Date()));
+            comandaService.updateEndTime(id, new Date());
+            broadcastUpdate(comanda, "updateEndTime");
+            return new ResponseEntity<>(comanda, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Comanda not found", HttpStatus.NOT_FOUND);
         }
     }
 }

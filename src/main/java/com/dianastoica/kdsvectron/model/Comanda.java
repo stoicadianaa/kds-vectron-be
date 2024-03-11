@@ -2,9 +2,9 @@ package com.dianastoica.kdsvectron.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.Id;
 import lombok.*;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
