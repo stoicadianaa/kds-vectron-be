@@ -6,9 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +25,7 @@ public class ComandaResource {
 
     public void broadcastUpdate(Comanda comanda, String updateType) {
         Map<String, Object> updateInfo = new HashMap<>();
-        updateInfo.put("updateType", updateType); // e.g., "create", "update", "delete"
+        updateInfo.put("updateType", updateType);
         updateInfo.put("comanda", comanda);
         template.convertAndSend("/topic/comandaUpdate", updateInfo);
     }
@@ -46,29 +44,6 @@ public class ComandaResource {
         response.put("comenzi", comenzi);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
-//    @GetMapping("/all/stream")
-//    public ResponseBodyEmitter getAllStream() {
-//        final ResponseBodyEmitter emitter = new ResponseBodyEmitter();
-//
-//        // Use a separate thread or an executor service for non-blocking IO operations
-//        new Thread(() -> {
-//            try {
-//                List<Comanda> comenzi = comandaRepository.findAll();
-//                for (Comanda comanda : comenzi) {
-//                    // Assuming you have a way to convert Comanda objects to JSON or some other format
-//                    emitter.send(comanda);
-//                    // Mimic some delay or processing time
-//                    Thread.sleep(1000);
-//                }
-//                emitter.complete();
-//            } catch (IOException | InterruptedException e) {
-//                emitter.completeWithError(e);
-//            }
-//        }).start();
-//
-//        return emitter;
-//    }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable String id) {
