@@ -14,6 +14,8 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/rest/comenzi")
@@ -65,13 +67,23 @@ public class ComandaResource {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<Map<String, Object>> getAll() {
+    public ResponseEntity<Map<String, Object>> getAll(@RequestParam(required = false) Boolean ended) {
         List<Comanda> comenzi = comandaRepository.findAll();
+
+        Predicate<Comanda> filterPredicate = (ended != null && ended)
+                ? comanda -> comanda.getEndTime() != null
+                : comanda -> comanda.getEndTime() == null;
+
+        if (ended != null) {
+            comenzi = comenzi.stream()
+                    .filter(filterPredicate)
+                    .collect(Collectors.toList());
+        }
+
         Map<String, Object> response = new HashMap<>();
         response.put("comenzi", comenzi);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
     @PutMapping("/updateStartTime")
     public ResponseEntity<?> updateStartTime(@RequestParam String id) {
         Comanda comanda = comandaRepository.findByIdComanda(id);
